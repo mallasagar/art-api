@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const dbconfig=require('../config/dbconfig')
 
 
 const mongodb=require("mongodb");
@@ -9,14 +8,14 @@ const dbUrl =  "mongodb://127.0.0.1:27017"
 // const ObjectId=mongodb.ObjectId
 const dbName = "art"
 
-router.route('/user')
+router.route('/')
 .get(function(req,res,next){
   // conntecting a databases
   MongoClient.connect(dbUrl)
     .then((client)=>{
       // when connection is success
           const db=client.db(dbName);
-          db.collection('art')
+          db.collection('user')
           .find()
           .toArray()
           .then((art)=>{

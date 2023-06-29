@@ -10,7 +10,7 @@ var galleryRouter = require('./routes/gallery');
 var serviceRouter = require('./routes/service');
 var packageRouter = require('./routes/package');
 var contactRouter = require('./routes/contact');
-var homeRouter = require('./routes/home.js');
+var homeRouter = require('./routes/home');
 
 var app = express();
 
@@ -25,12 +25,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/user', usersRouter);
+app.use('/users', usersRouter);
 app.use('/gallery', galleryRouter);
 app.use('/service', serviceRouter);
 app.use('/package', packageRouter);
 app.use('/contact', contactRouter);
-app.use('/home', homeRouter);
+app.use('/homes', homeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

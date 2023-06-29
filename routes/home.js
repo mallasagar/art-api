@@ -7,30 +7,33 @@ const MongoClient=mongodb.MongoClient;
 const dbUrl =  "mongodb://127.0.0.1:27017"
 const dbName = "art"
 
-router.route('/home')
-.get(function(req,res,next){
-  // conntecting a databases
-  MongoClient.connect(dbUrl)
-  .then((client)=>{
-    // when connection is success
-          const db=client.db(dbName);
-          db.collection('home')
-          .find()
-          .toArray()
-          .then((home)=>{
-            res.json(home)
 
-          })
-          .catch((err)=>{
-            res.json(err)
-          })
+router.route('/')
+  .get(function(req,res,next){
+    // conntecting a databases
+    MongoClient.connect(dbUrl)
+      .then((client)=>{
+        // when connection is success
+            const db=client.db(dbName);
+            db.collection('home')
+            .find()
+            .toArray()
+            .then((home)=>{
+              res.json(home)
+  
+            })
+            .catch((err)=>{
+              res.json(err)
+            })
+  
+      })
+      .catch((err)=>{
+        res.json({error:err})
+      })
+  })
+  
 
-    })
-    .catch((err)=>{
-      res.json({error:err})
-    })
-})
-.post(function(req,res,next){
+  .post(function(req,res,next){
   // conntecting a databases
   MongoClient.connect(dbUrl)
     .then((client)=>{
@@ -49,6 +52,7 @@ router.route('/home')
       res.json({error:err})
     })
 })
+
 
 
 

@@ -13,7 +13,7 @@ const dbName = "art"
 
 
 
-router.route('/user')
+router.route('/')
   .get(function(req,res,next){
     // conntecting a databases
     MongoClient.connect(dbUrl)
@@ -92,11 +92,13 @@ router.route("/:id")
     MongoClient.connect(dbUrl)
     .then((client)=>{
       // when connection is success
+      const db=client.db(dbName);
 
-      db.collection('art').updateOne({_id:ObjectId(req.params.id)},
+      db.collection('user')
+      .updateOne({_id: new ObjectId(req.params.id)},
       {$set:req.body})
-      .then((success)=>{
-        res.json(req.body)
+      .then((user)=>{
+        res.json(user)
       })
       .catch((err)=>{
         res.json(err)
