@@ -10,7 +10,7 @@ var galleryRouter = require('./routes/gallery');
 var serviceRouter = require('./routes/service');
 var packageRouter = require('./routes/package');
 var contactRouter = require('./routes/contact');
-var homeRouter = require('./routes/home');
+var homeRouter = require('./routes/home.js');
 
 var app = express();
 
@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/gallery', galleryRouter);
 app.use('/service', serviceRouter);
 app.use('/package', packageRouter);
