@@ -1,105 +1,28 @@
 var express = require('express');
 var router = express.Router();
+const indexuser = require('../controller/home.controller');
 
-
-const dbconnection =require('../config/dbconfig')
-const mongodb=require("mongodb");
-const ObjectId=mongodb.ObjectId
-
-
-router.route('/')
-  .get(function(req,res,next){
-         dbconnection(function(err, db){
-          if(err){
-            next(err)
-          }else{
-            db.collection('art')
-            .find()
-            .toArray()
-            .then((art)=>{
-              res.json(art)
-            })
-            .catch((err)=>{
-              res.json(err)
-            })
-          }
-
-        })
-      })
-  .post(function(req,res,next){
-    dbconnection(function(err,db){
-      if(err){
-        next(err)
-      }else{
-        db.collection('art').insertOne(req.body)
-        .then((art)=>{
-          res.json(art)
-
-        })
-        .catch((err)=>{
-          res.json(err)
-        })
-      }
-    })
+const multer =require('multer')
+const mystorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, '../public/images')
+    },
+    filename: function (req, file, cb) {
+     const file_name=file.originalname;
+     cb(null,file_name)
+    }
+  })
   
-})
-
-
+const upload=multer({storage:mystorage})
+router.route('/')
+.get(indexuser.gethomeuser)
+.post( upload.single("image"),indexuser.addhomeuser)
 
 router.route("/:id")
-    .get(function(req,res,next){
-    dbconnection(function(err,db){
-      if(err){
-        next(err)
-      }else{
-                db.collection('art')
-                .find(
-                  { _id: new  ObjectId(req.params.id)}
-                  )
-                .project({age:0})
-                .toArray()
-                .then((art)=>{
-                  res.json(art)
-          
-                })
-                .catch((err)=>{
-                  res.json(err)
-                })
-            }
-          })
-      })
-    .put(function(req,res,next){
-      dbconnection(function(err,db){
-        if(err){
-          next(err)
-        }else{
-                  db.collection('art')
-                  .updateOne({_id: new ObjectId(req.params.id)},
-                  {$set:req.body})
-                  .then((user)=>{
-                    res.json(user)
-                  })
-                  .catch((err)=>{
-                    res.json(err)
-                  })                
-              }
-            })
-      })
-    .delete(function(req,res,next){
-        dbconnection(function(err,db){
-          if(err){
-            next(err)
-          }else{
-                    db.collection('art')
-                    .deleteOne({_id: new ObjectId(req.params.id)})
-                    .then((art)=>{
-                      res.json(art)
-                    })
-                    .catch((err)=>{
-                      res.json(err)
-                    })                
-                }
-              })
-      })
+    .get(indexuser.gethomeuserbyid)
+    .put(indexuser.updatehomeuserbyid)
+    .delete(indexuser.deletehomeuserbyid)
+
+
 
 module.exports = router;

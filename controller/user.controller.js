@@ -2,21 +2,19 @@
 const User=require('../model/userindexmodel.js')
 
 function getuser(req,res,next){
-  const user=new User(req.body);
-     user
-      .find()
-      .toArray()
-      .then((users)=>{
-        res.json(users);
-      })
-      .catch((err)=>{
-        res.json({Error:err});
-      })
+  User.find({})
+  .then((user)=>{
+    res.json(user)
+  })
+  .catch((err)=>{
+    res.json({Error:err})
+  })
 
 }
 
 function adduser(req,res,next){
   const user=new User(req.body);
+ 
    user.save()
    .then((success)=>{
     res.json(success);

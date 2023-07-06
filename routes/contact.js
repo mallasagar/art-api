@@ -2,36 +2,40 @@
 var express = require('express');
 var router = express.Router();
 
+const contactcontroller = require('../controller/contactcontroller');
+// const ObjectId=mongodb.ObjectId
+const multer =require('multer')
+
+const mystorage=multer.diskStorage({
+    filename:function(req,file,cb){
+        const file_name=file.originalname;
+        cb(null,file_name);
+    },
+    destination:function(req,file, cb){
+        cb(null,process.cwd()+"/public/images/")
+    }
+})
+
+const upload = multer({ 
+    storage:mystorage
+ })
+
+
 
 router.route('/')
-.get(function(req,res,next){
-    res.send("respond with a body")
-})
-.post(function(req,res,next){
-    res.send("respond with a body")
-})
-.put(function(req,res,next){
-    res.send("respond with a body")
-})
-.delete(function(req,res,next){
-    res.send("respond with a body")
-})
+.get(contactcontroller.getcontactuser)
+router.route('/')
+    .post(upload.single("image"),contactcontroller.addcontactuser)
 
 
-// CRUD with id
-router.route('/id')
-.get(function(req,res,next){
-    res.send("respond with a body")
-})
-.post(function(req,res,next){
-    res.send("respond with a body")
-})
-.put(function(req,res,next){
-    res.send("respond with a body")
-})
-.delete(function(req,res,next){
-    res.send("respond with a body")
-})
+
+router.route("/:id")
+    .get(contactcontroller.getcontactuserbyid)
+    .put(contactcontroller.updatecontactuserbyid)
+    .delete(contactcontroller.deletecontactuserbyid)
+
+
+
 
 
 

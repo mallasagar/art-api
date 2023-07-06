@@ -1,22 +1,22 @@
 
-const mongodb=require("mongodb");
-const MongoClient=mongodb.MongoClient;
-const dbUrl =  "mongodb://127.0.0.1:27017"
-const dbName = "art"
+// const mongodb=require("mongodb");
+// const MongoClient=mongodb.MongoClient;
+// const dbUrl =  "mongodb://127.0.0.1:27017"
+// const dbName = "art"
 
 
 
 
-function dbconnection(cb){
-  MongoClient.connect(dbUrl)
-  .then((client)=>{
-      const db=client.db(dbName);
-      cb(null,db)
+// function dbconnection(cb){
+//   MongoClient.connect(dbUrl)
+//   .then((client)=>{
+//       const db=client.db(dbName);
+//       cb(null,db)
   
-  })    
-  .catch((err)=>{
-      cb(err);
-  })
-}
+//   })    
+//   .catch((err)=>{
+//       cb(err);
+//   })
+// }
 
-module.exports= dbconnection;
+// module.exports= dbconnection;

@@ -1,15 +1,20 @@
 var express = require('express');
-var router = express.Router();
-const usercontroller = require('../controller/user.controller');
 // const ObjectId=mongodb.ObjectId
 
+const multer =require('multer')
+const upload=multer({
+    dest:"./public/images"
+})
+var router = express.Router();
+const usercontroller = require('../controller/user.controller');
 
 
 
 
-router.route('')
+
+router.route('/')
 .get(usercontroller.getuser)
-.post(usercontroller.adduser)
+.post( upload.single("image"),usercontroller.adduser)
 
 
 
