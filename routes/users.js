@@ -7,7 +7,7 @@ const usercontroller = require('../controller/user.controller');
 
 
 
-router.route('/')
+router.route('')
 .get(usercontroller.getuser)
 .post(usercontroller.adduser)
 

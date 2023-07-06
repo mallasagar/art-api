@@ -1,98 +1,65 @@
-const dbconnection=require('../config/dbconfig.js')
-const mongodb=require("mongodb");
-const ObjectId=mongodb.ObjectId
+
+const User=require('../model/userindexmodel.js')
 
 function getuser(req,res,next){
-    dbconnection(function(err, db){
-        if(err){
-          next(err);
-        }else{
-        db.collection('user')
-          .find()
-          .toArray()
-          .then((user) =>{
-            res.json(user)
-          })
-          .catch((err)=>{
-            res.json(err)
-          })
-        }
+  const user=new User(req.body);
+     user
+      .find()
+      .toArray()
+      .then((users)=>{
+        res.json(users);
       })
+      .catch((err)=>{
+        res.json({Error:err});
+      })
+
 }
 
-
 function adduser(req,res,next){
-    dbconnection(function(err,db){
-        if(err){
-          next(err)
-        }else{
-          db.collection('user').insertOne(req.body)
-          .then((user)=>{
-            res.json(user)
-  
-          })
-          .catch((err)=>{
-            res.json(err)
-          })
-        }
-      })
+  const user=new User(req.body);
+   user.save()
+   .then((success)=>{
+    res.json(success);
+   })
+   .catch((err)=>{
+    res.json({Error:err});
+   })
 }
 
 function getuserbyid(req,res,next){
-    dbconnection(function(err,db){
-        if(err){
-          next(err)
-        }else{
-                  db.collection('user')
-                  .find(
-                    { _id: new  ObjectId(req.params.id)}
-                    )
-                  .project({age:0})
-                  .toArray()
-                  .then((user)=>{
-                    res.json(user)
-            
-                  })
-                  .catch((err)=>{
-                    res.json(err)
-                  })
-              }
-            })
+    User.findById(req.params.id)
+    .then((users)=>{
+      res.json(users)
+    })
+    .catch((err)=>{
+      res.json({Error:err})
+    })
 }
 
 function updateuserbyid(req,res,next){
-    dbconnection(function(err,db){
-        if(err){
-          next(err)
-        }else{
-                  db.collection('user')
-                  .updateOne({_id: new ObjectId(req.params.id)},
-                  {$set:req.body})
-                  .then((user)=>{
-                    res.json(user)
-                  })
-                  .catch((err)=>{
-                    res.json(err)
-                  })                
-              }
-            })
+User.updateOne({
+  _id:req.params.id
+},{
+  $set:req.body
+})
+.then((success)=>{
+  res.json(req.body)
+})
+.catch((err)=>{
+  res.json({Error:err})
+})
 }
 
 function deleteuserbyid(req,res,next){
-    dbconnection(function(err,db){
-        if(err){
-          next(err)
-        }else{
-                  db.collection('user')
-                  .deleteOne({_id: new ObjectId(req.params.id)})
-                  .then((user)=>{
-                    res.json(user)
-                  })
-                  .catch((err)=>{
-                    res.json(err)
-                  })                
-              }
-            })
+    User.deleteOne({
+      _id:req.params.id
+    })
+    .then((success)=>{
+      res.json(success)
+    })
+    .catch((err)=>{
+      res.json({Error:err})
+    })
 }
 
 module.exports = {
